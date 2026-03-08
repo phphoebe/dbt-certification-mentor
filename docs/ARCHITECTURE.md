@@ -8,44 +8,44 @@ Visual flow of how components work together — similar to no-code workflow diag
 
 ```mermaid
 flowchart TB
-    subgraph UI["🖥️ Streamlit UI"]
+    subgraph Step1["1. User Input"]
         A[User types question]
-        B[Chat input]
-        C[Display response]
     end
 
-    subgraph Memory["📦 Memory"]
-        D["st.session_state.messages<br/>(chat history)"]
+    subgraph Step2["2. Memory"]
+        B["Append to st.session_state.messages"]
     end
 
-    subgraph AppLogic["⚙️ App Logic (app.py)"]
-        E["get_mentor_response()<br/>Builds context from history"]
-        F["create_mentor_agent()<br/>Assembles Agent + Tools"]
+    subgraph Step3["3. App Logic (app.py)"]
+        C["get_mentor_response: build context from history"]
+        D["create_mentor_agent: assemble Agent + Tools"]
     end
 
-    subgraph Agent["🧠 Agent (OpenAI)"]
-        G["Receives: prompt.txt + context + question"]
-        H["Decides which tools to call"]
-        I["Synthesizes response from tool results"]
+    subgraph Step4["4. Agent (OpenAI)"]
+        E["Receives prompt.txt + context + question"]
+        F["Decides which tools to call"]
     end
 
-    subgraph Tools["🔧 Tools"]
-        J["FileSearchTool<br/>→ Vector store (study guide)"]
-        K["WebSearchTool<br/>→ Web (docs, Learn)"]
+    subgraph Step5["5. Tools"]
+        G["FileSearchTool<br/>Vector store"]
+        H["WebSearchTool<br/>Web / docs"]
+    end
+
+    subgraph Step6["6. Response"]
+        I["Synthesize from tool results"]
+        J["Append response & display"]
     end
 
     A --> B
-    B --> D
+    B --> C
+    C --> D
     D --> E
     E --> F
     F --> G
-    G --> H
-    H --> J
-    H --> K
-    J --> I
-    K --> I
-    I --> D
-    D --> C
+    F --> H
+    G --> I
+    H --> I
+    I --> J
 ```
 
 ---

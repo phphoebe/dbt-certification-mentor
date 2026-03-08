@@ -1,5 +1,5 @@
 def main():
-    print("Hello from dbt-mentor-agent!")
+    print("Hello from dbt-certification-mentor!")
 
 
 if __name__ == "__main__":
