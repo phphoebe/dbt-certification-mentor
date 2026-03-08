@@ -1,6 +1,6 @@
 # dbt Certification Mentor
 
-A Streamlit chat app that helps you prepare for the dbt Certified Developer exam. It searches the official study guide (vector store) and the web (dbt docs, best practices, Learn) to answer your questions with cited sources.
+A Streamlit chat app that helps you prepare for the [dbt Certified Developer exam](https://www.getdbt.com/certifications/analytics-engineer-certification-exam). It searches the official study guide (vector store) and the web (dbt docs, best practices, Learn) to answer your questions with cited sources.
 
 **Repo:** [github.com/phphoebe/dbt-certification-mentor](https://github.com/phphoebe/dbt-certification-mentor) · MIT License
 
