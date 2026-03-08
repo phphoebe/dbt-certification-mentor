@@ -1,0 +1,11 @@
+[project]
+name = "dbt-mentor-agent"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.14"
+dependencies = [
+    "openai>=2.26.0",
+    "openai-agents>=0.10.5",
+    "python-dotenv>=1.2.2",
+    "streamlit>=1.55.0",
+]
