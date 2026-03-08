@@ -3,3 +3,6 @@
 .venv/
 __pycache__/
 *.pyc
+
+# Study guide PDF (user downloads separately; do not commit)
+study_guide/

@@ -12,12 +12,16 @@ The app expects a pre-configured OpenAI vector store containing the dbt study gu
 
 **Option A: Using the setup script (recommended)**
 
-Ensure the study guide PDF is at `Instructions/week-2/Resources/dbt_Certificate Study Guide_Analytics_Engineer_Developer.pdf`, then:
+1. Download the official study guide PDF from [dbt Learn](https://learn.getdbt.com/learn/article/analytics-engineering-exam-study-guide)
+2. Place it in `study_guide/` in this project
+3. Run:
 
 ```bash
 # Add OPENAI_API_KEY to .env first
-uv run python setup_vector_store.py
+uv run python setup_vector_store.py "study_guide/dbt_Certificate Study Guide_Analytics_Engineer_Developer.pdf"
 ```
+
+(Adjust the filename if yours differs after downloading.)
 
 Copy the printed `vector_store_id` into your `.env` file.
 
@@ -52,19 +56,25 @@ Opens at http://localhost:8501
 ## Example Questions
 
 - What topics are covered on the dbt Certified Developer exam?
-- Explain ref() and how it affects model execution order
-- What are best practices for incremental models?
-- How do I configure tests for a model?
+- Explain `ref()` and how it affects model execution order
+- What are best practices for **incremental** models?
+- How do I configure **tests** for a model?
 - Suggest a study plan for the certification
+
+## Architecture
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for visual flowcharts (Mermaid) showing how components work together — similar to no-code workflow diagrams.
 
 ## Project Structure
 
 ```
 dbt-mentor-agent/
-├── app.py               # Streamlit + agent logic
-├── prompt.txt           # System prompt (dbt mentor persona)
+├── docs/
+│   └── ARCHITECTURE.md   # Visual flowcharts (Mermaid)
+├── app.py                # Streamlit + agent logic
+├── prompt.txt            # System prompt (dbt mentor persona)
 ├── setup_vector_store.py # One-time script to create vector store
 ├── pyproject.toml
-├── .env.example         # Copy to .env and fill in
+├── .env.example          # Copy to .env and fill in
 └── README.md
 ```

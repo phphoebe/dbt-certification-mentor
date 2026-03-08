@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """
 One-time script to create an OpenAI vector store and upload the dbt study guide.
-Run from project root: uv run python setup_vector_store.py
+Run: uv run python setup_vector_store.py <path-to-study-guide.pdf>
+
+Download the study guide from:
+https://learn.getdbt.com/learn/article/analytics-engineering-exam-study-guide
 
 Output: Prints vector_store_id to add to your .env file.
 """
-import os
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -14,16 +17,15 @@ from openai import OpenAI
 load_dotenv(override=True)
 client = OpenAI()
 
-# Path to study guide (relative to Assignments root)
-ASSIGNMENTS_ROOT = Path(__file__).parent.parent.parent
-STUDY_GUIDE = ASSIGNMENTS_ROOT / "Instructions" / "week-2" / "Resources"
-PDF_NAME = "dbt_Certificate Study Guide_Analytics_Engineer_Developer.pdf"
-pdf_path = STUDY_GUIDE / PDF_NAME
+if len(sys.argv) < 2:
+    print("Usage: uv run python setup_vector_store.py <path-to-study-guide.pdf>")
+    print("Download from: https://learn.getdbt.com/learn/article/analytics-engineering-exam-study-guide")
+    sys.exit(1)
 
+pdf_path = Path(sys.argv[1])
 if not pdf_path.exists():
-    print(f"Expected PDF at: {pdf_path}")
-    print("Please download the study guide and place it there, or edit this script.")
-    exit(1)
+    print(f"File not found: {pdf_path}")
+    sys.exit(1)
 
 print("Creating vector store...")
 vs = client.vector_stores.create(name="dbt-certification-study-guide")
