@@ -26,8 +26,8 @@ def _config_value(key: str) -> str | None:
 
 OPENAI_API_KEY = _config_value("OPENAI_API_KEY")
 vector_store_id = _config_value("vector_store_id")
-# Explicit chat model (Responses API). Default gpt-4o is widely available with hosted tools.
-_raw_model = _config_value("OPENAI_AGENT_MODEL") or os.getenv("OPENAI_AGENT_MODEL") or "gpt-4o"
+# Explicit chat model (Responses API). Default matches Agents SDK default; override if your key 404s.
+_raw_model = _config_value("OPENAI_AGENT_MODEL") or os.getenv("OPENAI_AGENT_MODEL") or "gpt-4.1"
 AGENT_MODEL = _raw_model.strip()
 # The Agents SDK uses os.environ["OPENAI_DEFAULT_MODEL"] whenever agent.model is None. Streamlit or
 # copied secrets sometimes set that var to an invalid internal id (e.g. o4m-sonic-o-api-ev3) → 404.
@@ -107,7 +107,7 @@ async def get_mentor_response(question: str, history: list[dict]) -> str:
             + "- **`vector_store_id`** must belong to the **same** OpenAI organization as **`OPENAI_API_KEY`** "
             "(recreate the store with this key or copy the correct `vs_…` ID from "
             "[Vector stores](https://platform.openai.com/storage/vector_stores)).\n"
-            "- **Model** not enabled for your key; set **`OPENAI_AGENT_MODEL`** (e.g. `gpt-4o`). "
+            "- **Model** not enabled for your key; set **`OPENAI_AGENT_MODEL`** (e.g. `gpt-4o` if `gpt-4.1` fails). "
             f"**Currently:** `{AGENT_MODEL}`.\n\n"
             f"_Details: {exc!s}_"
         )
