@@ -166,7 +166,7 @@ if st.sidebar.button("Clear Conversation"):
 with st.sidebar.expander("Example Questions"):
     st.markdown("""
     - What topics are covered on the dbt Certified Developer exam?
-    - Explain ref() and how it affects model execution order
+    - Compare snapshots vs incremental models for slowly changing dimensions
     - What are best practices for incremental models?
     - How do I configure tests for a model?
     - Suggest a study plan for the certification
