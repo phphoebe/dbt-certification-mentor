@@ -1,14 +1,36 @@
-import streamlit as st
-import os
 import asyncio
-from agents import Agent, Runner, WebSearchTool, FileSearchTool
+import os
+
+import streamlit as st
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv(override=True)
+# Local dev: .env. Streamlit Community Cloud: Advanced settings → Secrets (TOML).
+load_dotenv(override=False)
 
-OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
-vector_store_id = os.environ["vector_store_id"]
+st.set_page_config(page_title="dbt Certification Mentor", layout="wide")
+
+
+def _config_value(key: str) -> str | None:
+    v = os.environ.get(key)
+    if v:
+        return v
+    try:
+        if key in st.secrets:
+            return st.secrets[key]
+    except (FileNotFoundError, KeyError, RuntimeError, TypeError):
+        pass
+    return None
+
+
+OPENAI_API_KEY = _config_value("OPENAI_API_KEY")
+vector_store_id = _config_value("vector_store_id")
+if OPENAI_API_KEY:
+    os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
+# SDK reads OPENAI_API_KEY from the environment at client creation time.
+from agents import Agent, FileSearchTool, Runner, WebSearchTool  # noqa: E402
+
+CONFIG_OK = bool(OPENAI_API_KEY and vector_store_id)
 
 # Load system prompt from file
 PROMPT_PATH = os.path.join(os.path.dirname(__file__), "prompt.txt")
@@ -53,8 +75,14 @@ async def get_mentor_response(question: str, history: list[dict]) -> str:
 
 
 # --- Streamlit UI ---
-st.set_page_config(page_title="dbt Certification Mentor", layout="wide")
 st.title("📚 dbt Certification Mentor")
+if not CONFIG_OK:
+    st.error(
+        "Missing **OPENAI_API_KEY** or **vector_store_id**. "
+        "Locally: copy `.env.example` → `.env` and fill both. "
+        "On Streamlit Community Cloud: App settings → Secrets (TOML keys OPENAI_API_KEY, vector_store_id)."
+    )
+    st.stop()
 st.write(
     "Ask exam-prep questions. I search the study guide and dbt docs to help you prepare."
 )

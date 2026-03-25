@@ -1,0 +1,5 @@
+# Streamlit Community Cloud installs from this file (see README deploy section).
+streamlit>=1.55.0
+openai>=2.26.0
+openai-agents>=0.10.5
+python-dotenv>=1.2.2

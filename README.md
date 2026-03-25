@@ -46,6 +46,10 @@ uv run streamlit run app.py
 
 Opens at http://localhost:8501
 
+## Optional: hosted deployment
+
+You can run the same app on **[Streamlit Community Cloud](https://share.streamlit.io/)** using the same variables as local setup (`OPENAI_API_KEY`, `vector_store_id` — see `.env.example`). This repo includes `requirements.txt` for dependency installs.
+
 ## Features
 
 - **File Search:** Semantic search over the study guide PDF
@@ -74,6 +78,7 @@ dbt-mentor-agent/
 ├── app.py                # Streamlit + agent logic
 ├── prompt.txt            # System prompt (dbt mentor persona)
 ├── setup_vector_store.py # One-time script to create vector store
+├── requirements.txt      # Dependencies (e.g. hosted Streamlit)
 ├── pyproject.toml
 ├── .env.example          # Copy to .env and fill in
 └── README.md
