@@ -1,0 +1,12 @@
+# Accent for checkboxes, links, and focus — same dbt orange in both modes.
+#
+# Do NOT set a top-level [theme] primaryColor without `base`: Streamlit then
+# forces base = "light" for everyone (white background). Using [theme.light] /
+# [theme.dark] keeps Streamlit’s normal light & dark palettes so viewers can use
+# Settings → Theme → "Use system setting" (or pick Light / Dark).
+
+[theme.light]
+primaryColor = "#FF694B"
+
+[theme.dark]
+primaryColor = "#FF694B"

@@ -1,4 +1,5 @@
 import asyncio
+import base64
 import os
 
 import streamlit as st
@@ -32,8 +33,11 @@ from agents import Agent, FileSearchTool, Runner, WebSearchTool  # noqa: E402
 
 CONFIG_OK = bool(OPENAI_API_KEY and vector_store_id)
 
+_APP_DIR = os.path.dirname(__file__)
+LOGO_PATH = os.path.join(_APP_DIR, "assets", "dbt.svg")
+
 # Load system prompt from file
-PROMPT_PATH = os.path.join(os.path.dirname(__file__), "prompt.txt")
+PROMPT_PATH = os.path.join(_APP_DIR, "prompt.txt")
 with open(PROMPT_PATH, "r") as f:
     SYSTEM_PROMPT = f.read()
 
@@ -65,6 +69,12 @@ def create_mentor_agent():
     )
 
 
+def _svg_data_uri(svg_path: str) -> str:
+    with open(svg_path, "rb") as f:
+        b64 = base64.standard_b64encode(f.read()).decode("ascii")
+    return f"data:image/svg+xml;base64,{b64}"
+
+
 async def get_mentor_response(question: str, history: list[dict]) -> str:
     """Run agent with conversation context."""
     agent = create_mentor_agent()
@@ -75,7 +85,18 @@ async def get_mentor_response(question: str, history: list[dict]) -> str:
 
 
 # --- Streamlit UI ---
-st.title("📚 dbt Certification Mentor")
+# Flex header avoids extra gutter from st.columns; title size between default h1 and h2.
+_logo_uri = _svg_data_uri(LOGO_PATH)
+st.markdown(
+    f"""
+    <div style="display:flex;align-items:center;gap:0.5rem;margin:0 0 0.35rem 0;">
+        <img src="{_logo_uri}" width="32" height="32" alt=""
+            style="flex-shrink:0;display:block;margin:0;padding:0;" />
+        <span style="font-size:1.45rem;font-weight:600;line-height:1.25;margin:0;color:var(--text-color, inherit);">dbt Certification Mentor</span>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 if not CONFIG_OK:
     st.error(
         "Missing **OPENAI_API_KEY** or **vector_store_id**. "
